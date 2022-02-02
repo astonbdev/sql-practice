@@ -11,8 +11,10 @@ CREATE TABLE planets (
 
 CREATE TABLE moons (
     moon_name VARCHAR(50) PRIMARY KEY,
-    planet_id VARCHAR(50) REFERENCES planets
+    planet_id VARCHAR(50) NOT NULL REFERENCES planets
 );
+
+--consider name changes, and explicitly state in query
 
 INSERT INTO stars (star_name, temp_in_K)
 VALUES ('The Sun', 5800),
@@ -32,11 +34,12 @@ INSERT INTO moons (moon_name, planet_id)
     ('Phobos', 'Mars');
 
 
-SELECT planet_name, star_id as star, COUNT(*) as moon_count
+SELECT planet_name, star_id AS star, COUNT(moons.moon_name) AS moon_count
 FROM planets
 LEFT OUTER JOIN moons
-ON moons.planet_id = planets.planet_name;
-GROUP BY moons.planet_id;
+ON planet_id = planet_name
+GROUP BY planet_name
+ORDER BY star_id;
 
 
 
